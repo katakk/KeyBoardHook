@@ -1,0 +1,12 @@
+; KeyboardHookDll.def : DLL のモジュール パラメータを宣言します。
+
+LIBRARY      "KeyboardHookDll"
+
+SECTIONS
+    .HookData    READ WRITE SHARED
+    
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます
+	MyKeyboardProc
+	SetHook
+	UnHook
