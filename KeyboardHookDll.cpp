@@ -109,6 +109,7 @@ LRESULT CALLBACK MyKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 	{
 		case 0x14: return TRUE; //CAPS;
 		case 0xf2: return TRUE; //Kana;
+		case 0xf0: return TRUE; //Kana;
 		case 0xB1: pKey->vkCode = 0x24; pKey->scanCode = 0x47; break;
 		case 0xB0: pKey->vkCode = 0x23; pKey->scanCode = 0x4f; break;
 		case 0xB2: pKey->vkCode = 0x21; pKey->scanCode = 0x49; break;
