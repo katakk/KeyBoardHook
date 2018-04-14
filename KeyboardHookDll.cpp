@@ -132,15 +132,13 @@ SetWindowText(g_hwnd, str);
 
 void CALLBACK UnHook( )
 {
-	UnhookWindowsHookEx(hHook);
+    if ( hHook != NULL ) UnhookWindowsHookEx(hHook);
 	hHook = NULL;
 }
 
 HHOOK CALLBACK SetHook( HWND hwnd, UINT mes )
 {
-    if ( hHook != NULL )
-		UnHook();
-
+	UnHook();
     hHook = SetWindowsHookEx(
         WH_KEYBOARD_LL,           // フックの種類
         MyKeyboardProc,          // 処理用関数

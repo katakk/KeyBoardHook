@@ -34,4 +34,5 @@ public:
 	afx_msg void OnBnClickedButton1();
 	virtual BOOL DestroyWindow();
 	CButton m_button;
+	afx_msg void OnClose();
 };

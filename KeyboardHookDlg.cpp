@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "KeyboardHook.h"
 #include "KeyboardHookDlg.h"
+#include ".\keyboardhookdlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -32,6 +33,7 @@ BEGIN_MESSAGE_MAP(CKeyboardHookDlg, CDialog)
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDOK, OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BUTTON1, OnBnClickedButton1)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
@@ -128,5 +130,13 @@ void CKeyboardHookDlg::OnBnClickedButton1()
 BOOL CKeyboardHookDlg::DestroyWindow()
 {
 	UnHook();
+	m_hHook = NULL;
 	return CDialog::DestroyWindow();
+}
+
+void CKeyboardHookDlg::OnClose()
+{
+	UnHook();
+	m_hHook = NULL;
+	CDialog::OnClose();
 }
