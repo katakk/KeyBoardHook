@@ -2,11 +2,10 @@
 // Microsoft Visual C++ generated include file.
 // Used by KeyboardHook.rc
 //
-#define IDR_MAINFRAME                   2
-#define IDD_KEYBOARDHOOK_DIALOG         3
-#define IDC_BUTTON1                     4
-#define IDB_BITMAP1                     3001
-#define IDB_BITMAP2                     3002
+#define IDR_MAINFRAME                   2000
+#define IDD_KEYBOARDHOOK_DIALOG         3000
+#define IDB_HOOK                        3001
+#define IDB_UNHOOK                      3002
 
 // Next default values for new objects
 // 

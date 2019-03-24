@@ -67,6 +67,7 @@ BOOL CKeyboardHookDllApp::InitInstance()
 #pragma data_seg( ".HookData" )
 HHOOK hHook;      // フック識別用のハンドル
 static HWND g_hwnd = NULL;
+static int g_enabled = 0;
 static UINT g_message = -1;
 #pragma data_seg()
 
@@ -77,7 +78,7 @@ LRESULT CALLBACK MyKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 
 	LPKBDLLHOOKSTRUCT pKey = (LPKBDLLHOOKSTRUCT) lParam;
 
-	LPCTSTR event[5] = { _T(""), _T("KD"), _T("KU"), _T("SD"), _T("SU") };
+	LPCTSTR event[5] = { _T(""), _T(" D"), _T(" U"), _T("SD"), _T("SU") };
 
 	int i = 0;
 	if(wParam == WM_KEYDOWN) i = 1;
@@ -107,51 +108,51 @@ LRESULT CALLBACK MyKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 
 	switch( pKey->vkCode)
 	{
-		case 0x14: return TRUE; //CAPS;
-		case 0xf2: return TRUE; //Kana;
-		case 0xf0: return TRUE; //Kana;
-		case 0xB1: pKey->vkCode = 0x24; pKey->scanCode = 0x47; break;
-		case 0xB0: pKey->vkCode = 0x23; pKey->scanCode = 0x4f; break;
-		case 0xB2: pKey->vkCode = 0x21; pKey->scanCode = 0x49; break;
-		case 0xB3: pKey->vkCode = 0x22; pKey->scanCode = 0x51; break;
+	case 0x14: return TRUE; //CAPS;
+	case 0xf2: return TRUE; //Kana;
+	case 0xf0: return TRUE; //Kana;
+	case 0xB1: pKey->vkCode = 0x24; pKey->scanCode = 0x47; break;
+	case 0xB0: pKey->vkCode = 0x23; pKey->scanCode = 0x4f; break;
+	case 0xB2: pKey->vkCode = 0x21; pKey->scanCode = 0x49; break;
+	case 0xB3: pKey->vkCode = 0x22; pKey->scanCode = 0x51; break;
 	}
 
-//	SendMessage( g_hwnd, g_message, wParam, lParam );
 	CString str;
-	str.Format(_T("%s [%x %x], %x, f:%x, e:%x"),
-		event[i],
+	str.Format(_T("%2x %2x[%s] %d"),
 		pKey->vkCode, pKey->scanCode,
-		pKey->time,  pKey->flags, pKey->dwExtraInfo );
-//	AfxMessageBox(str);
-SetWindowText(g_hwnd, str);
-		return CallNextHookEx(hHook, nCode, wParam, lParam);
+		event[i], pKey->time
+		);
 
-//	return TRUE;
+	SetWindowText(g_hwnd, str);
+	if(g_enabled)
+		return TRUE;
+	else
+		return CallNextHookEx(hHook, nCode, wParam, lParam);
 }
 
 
 void CALLBACK UnHook( )
 {
-    if ( hHook != NULL ) UnhookWindowsHookEx(hHook);
+	UnhookWindowsHookEx(hHook);
 	hHook = NULL;
 }
 
 HHOOK CALLBACK SetHook( HWND hwnd, UINT mes )
 {
-	UnHook();
-    hHook = SetWindowsHookEx(
-        WH_KEYBOARD_LL,           // フックの種類
-        MyKeyboardProc,          // 処理用関数
-		theApp.m_hInstance,      // フックするインスタンス
-        NULL );
+	if ( hHook != NULL ) UnHook();
+	hHook = SetWindowsHookEx( WH_KEYBOARD_LL, MyKeyboardProc, theApp.m_hInstance, NULL );
+	g_hwnd = hwnd;
+	g_message = mes;
+	if ( hHook == NULL )
+	{
+		TRACE("EORROR hook install\n");
+		return 0;
+	}
+	return hHook;
+}
 
-    g_hwnd = hwnd;
-    g_message = mes;
-
-    if ( hHook == NULL )
-    {
-        TRACE("EORROR hook install\n");
-        return 0;
-    }
-    return hHook;
+int CALLBACK ToggleEnable( )
+{
+	g_enabled = ! g_enabled;
+	return g_enabled;
 }

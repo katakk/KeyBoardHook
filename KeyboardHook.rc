@@ -69,7 +69,7 @@ EXSTYLE WS_EX_TOPMOST | WS_EX_APPWINDOW
 CAPTION "KeyboardHook"
 FONT 9, "MS UI Gothic", 0, 0, 0x1
 BEGIN
-    PUSHBUTTON      "",IDC_BUTTON1,0,0,127,136,BS_BITMAP | BS_FLAT
+    PUSHBUTTON      "",IDOK,0,0,127,136,BS_BITMAP | BS_FLAT | NOT WS_TABSTOP
 END
 
 
@@ -87,8 +87,8 @@ IDR_MAINFRAME           ICON                    "KeyboardHook.ico"
 // Bitmap
 //
 
-IDB_BITMAP1             BITMAP                  "bitmap1.bmp"
-IDB_BITMAP2             BITMAP                  "bitmap2.bmp"
+IDB_HOOK                BITMAP                  "hook.bmp"
+IDB_UNHOOK              BITMAP                  "unhook.bmp"
 #endif    // “ú–{Œê resources
 /////////////////////////////////////////////////////////////////////////////
 

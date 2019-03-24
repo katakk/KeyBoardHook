@@ -10,3 +10,4 @@ EXPORTS
 	MyKeyboardProc
 	SetHook
 	UnHook
+	ToggleEnable
